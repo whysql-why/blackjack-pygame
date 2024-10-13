@@ -132,7 +132,6 @@ ace_of_spades = functions.load_card('ace_of_spades')
 logger.system("All cards loaded, starting game.")
 
 # we need a random system to get 2 images from the directory.
-
 logger.info("Player's hand:")
 first_card = functions.random_card()
 second_card = functions.random_card()
@@ -149,7 +148,6 @@ print("VALUE OF BOTH CARDS: ", image_first_card[1] + image_second_card[1])
 print(first_card, " + ", second_card)
 
 # functions.value(image_first_card)
-
 
 first_card_rec = image_first_card[0].get_rect()
 first_card_rec.x = 100 # same for here but X
@@ -220,6 +218,9 @@ logger.system("=========================================")
 
 ##########################
 while running:
+   # white_rect = pygame.Rect(first_card_rec.x, first_card_rec.y + first_card_rec.height, first_card_rec.width, 100)
+   white_rect = pygame.Rect(100, 100, 430, 320)
+   pygame.draw.rect(screen, (255, 255, 255), white_rect)
    screen.blit(image_first_card[0], first_card_rec)
    screen.blit(image_second_card[0], second_card_rec)
    for event in pygame.event.get():
@@ -229,7 +230,7 @@ while running:
         if event.key == pygame.K_SPACE:
             logger.info("Player hits a card.")
             new_card = functions.random_card()
-            print(new_card)
+            print(new_card) # ADD A SYSTEM TO DETECT IF THE SAME CARD HAS BEEN CHOSEN (RARE)
             image_new_card = functions.loaded_card(new_card)
             second_card_rec.x = 500
             second_card_rec.y = 100
