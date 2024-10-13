@@ -43,6 +43,11 @@ def value(name_of_card):
         return 13
     return 14
 
+def only_value(name_of_card):
+    direc = 'assets/cards/' + name_of_card + '.png'
+    value_of_card = value(name_of_card)
+    return value_of_card
+
 
 def loaded_card(name_of_card):
     direc = 'assets/cards/' + name_of_card
@@ -73,6 +78,43 @@ def lose(num):
 # below is a dealer class, that will handle dealer stuff 
 
 class dealer():
+
+    def play(dif, values):
+        first_card = values[0]
+        second_card = values[1]
+        print("===========================")
+        print("       BLACK JACK          ")
+        print("        [dealer]           ")
+        print("  first card: ", first_card, "|", "second card:" ,second_card, "       ")
+        print("                           ")
+        print("===========================")
+        if(sum(values) > 21):
+            print("dealer bust")
+            print(" total: ", sum(values))
+            print("Cards: ", values[0], "|", values[1])
+            return False, values, "bust"
+        else:
+            print("Dealer is thinking.....")
+            hit_or_no = random.randint(1, 2) # very good ai
+            print("DEALER AI:", hit_or_no)
+            if(hit_or_no == 1):
+                print("dealer hits")
+                new_card = random_card()
+                values.append(only_value(new_card))
+                print("dealer's new card: ", new_card, "|", "dealer's new total: ", sum(values))
+                play(dif, values)
+                return True, values, "hits"
+            else:
+                print("dealer stays")
+                return False, values, "stay"
+
+    #def get_card(level):
+    #    card = random_card(jar)
+   #     load_card0 = load_card(card)
+    #    load_card = loaded_card(load_card0)
+     #   return load_card # returns a random card from the level of dif provided.
+
+
     # not rigged at all....
     def random_card(level):
         if(level == 1):
@@ -81,12 +123,21 @@ class dealer():
             print("LEVEL 1 ", not_rigged)
             return not_rigged # the dealer will get high cards.
         if(level == 2):
-            medium_cards = ["placeholder","placeholder"]
+            medium_cards = [
+    "9_of_clubs", "9_of_diamonds", "9_of_hearts", "9_of_spades",
+    "8_of_clubs", "8_of_diamonds", "8_of_hearts", "8_of_spades",
+    "ace_of_clubs", "ace_of_diamonds", "ace_of_hearts", "ace_of_spades",
+    "jack_of_clubs", "jack_of_diamonds", "jack_of_hearts", "jack_of_spades"
+            ]
             not_rigged = random.choice(medium_cards)
             return not_rigged
         if(level == 3):
             # this is the hardest one where the bot will ALWAYS GET THE BEST CARDS.
-            hard_cards = ["placeholder", "placeholder"]
+            hard_cards = [
+    "king_of_spades", "king_of_hearts", "queen_of_spades", "queen_of_hearts",
+    "ace_of_spades", "ace_of_hearts", "ace_of_clubs", "ace_of_diamonds",
+    "jack_of_spades", "jack_of_hearts"
+            ]
             not_rigged = random.choice(hard_cards)
             return not_rigged
-        return "Yo no bot level was provided"
+        return "Yo, no bot level was provided"

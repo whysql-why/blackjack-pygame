@@ -156,9 +156,9 @@ second_card_rec.y = 100
 # VALUES HERE:
 
 total_values = [image_first_card[1], image_second_card[1]]
+dealer_values = []
 
-
-#### 
+######
 
 
 
@@ -169,8 +169,29 @@ dealer_first_card = functions.dealer.random_card(bot_dif)
 dealer_second_card = functions.dealer.random_card(bot_dif)
 
 
-print("== 1 ", dealer_first_card, " ==")
-print("== 2 ", dealer_second_card, " ==")
+
+
+print("== 1 ", dealer_first_card, "[", functions.only_value(dealer_first_card), "]", " ==")
+print("== 2 ", dealer_second_card, "[", functions.only_value(dealer_second_card), "]", " ==")
+
+
+dealer_values = [functions.only_value(dealer_first_card), functions.only_value(dealer_second_card)]
+
+def already(data):
+    if sum(data) >= 21:
+        print("Ok so, dealer already has above 21 valued cards.")
+        print("BEFORE: ")
+        print(sum(data))
+        new_card = functions.dealer.random_card(1)
+        new_card_value = functions.only_value(new_card)
+    
+        dealer_values = [functions.only_value(dealer_first_card), new_card_value]
+        return dealer_values
+
+if sum(dealer_values) >= 21:
+    already(dealer_values)
+    
+dealer_values = already(dealer_values)
 
 
 logger.info("Everything is completed, starting game.")
@@ -216,7 +237,21 @@ while running:
                 functions.lose(current_value)
                 exit(0)
         if event.key == pygame.K_RETURN:
-            print("Player said: Stand. with:")
+            print("Player said: Stand. with:", sum(total_values))
+            logger.info("AI is playing.....")
+            returned_values = functions.dealer.play(bot_dif, dealer_values)
+            print(returned_values)
+            if(returned_values[2] == 'bust'):
+                for i in range(10):
+                    print("\n")
+                print("========================")
+                print("      BLACK JACK         ")
+                print(" DEALER BUST WITH CARDS:")
+                print(returned_values[1])
+                print("=========================")
+                print("You WON!!!!", "Your cards:")
+                print(total_values)
+                exit(0)
            # screen.blit(image_new_card[0], second_card_rec)
          #   logger.info("New card: ")
          #   logger.info(new_card)
