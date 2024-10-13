@@ -5,6 +5,12 @@ import os, random, pygame
 # project started on 2024-10-10
 # wanted different files doing different things.
 
+# 2024-10-13: 
+# I do not like this :( BUGS: 
+# 1. winning logic doesn't even work 
+# 2. dealer is broken, tried fixing. Do not want to work on the dealer no more.
+#
+
 pygame.init()
 screen = pygame.display.set_mode((1000, 500))
 clock = pygame.time.Clock()
@@ -190,7 +196,7 @@ def already(data):
 
 if sum(dealer_values) >= 21:
     already(dealer_values)
-    
+
 dealer_values = already(dealer_values)
 
 
@@ -210,7 +216,6 @@ logger.system("=========================================")
 #all_cards = os.listdir('assets/cards')
 #random_card = random.choice(all_cards) # this gets a random card from the images
 #logger.system("A random card has been chosen.")
-
 
 
 ##########################
