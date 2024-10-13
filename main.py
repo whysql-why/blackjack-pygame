@@ -150,8 +150,15 @@ first_card_rec.x = 100 # same for here but X
 first_card_rec.y = 100 # starting pos Y 
 
 second_card_rec = image_second_card[0].get_rect()
-second_card_rec.x = 400
+second_card_rec.x = 300
 second_card_rec.y = 100
+
+# VALUES HERE:
+
+total_values = [image_first_card[1], image_second_card[1]]
+
+
+#### 
 
 
 
@@ -170,9 +177,8 @@ logger.info("Everything is completed, starting game.")
 logger.system("=========================================")
 logger.system("           BLACKJACK                     ")
 logger.system("                                         ")
-logger.system("                                         ")
-logger.system("                                         ")
-logger.system("                                         ")
+logger.system("     You compete with the dealer...      ")
+logger.system("  Try to get close to the number 21      ")
 logger.system("                                         ")
 logger.system("           CONTROLS                      ")
 logger.system(" ─ SPACE = HIT (YOU WANT ANOTHER CARD)   ")
@@ -193,7 +199,30 @@ while running:
    for event in pygame.event.get():
        if event.type == pygame.QUIT:
            running = False
-   
+       if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE:
+            logger.info("Player hits a card.")
+            new_card = functions.random_card()
+            print(new_card)
+            image_new_card = functions.loaded_card(new_card)
+            second_card_rec.x = 500
+            second_card_rec.y = 100
+            print("VALUE OF THIS CARD IS:", image_new_card[1])
+            total_values.append(image_new_card[1])
+            current_value = sum(total_values)
+            print("TOTAL VALUE:", current_value)
+            if current_value > 21:
+                logger.info("Player busts. You Lose.")
+                functions.lose(current_value)
+                exit(0)
+        if event.key == pygame.K_RETURN:
+            print("Player said: Stand. with:")
+           # screen.blit(image_new_card[0], second_card_rec)
+         #   logger.info("New card: ")
+         #   logger.info(new_card)
+         #   print("Value of player's cards: ", functions.value(image_first_card) + functions.value(image_second_card) + functions.value(image_new_card))
+          #  if functions.value(image_first_card) + functions.value(image_second_card) + functions.value(image_new_card) > 21:
+          #      logger.info("Player busts.")
    # screen.fill("")
 
 

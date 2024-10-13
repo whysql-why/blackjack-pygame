@@ -60,6 +60,16 @@ def random_card():
     logger.system(random_card)
     return random_card
 
+
+def lose(num):
+    logger.info("===========================")
+    logger.info("       BLACK JACK          ")
+    logger.info("       YOU LOST!!          ")
+    logger.info(num)
+    logger.info("                           ")
+    logger.info("===========================")
+
+
 # below is a dealer class, that will handle dealer stuff 
 
 class dealer():
