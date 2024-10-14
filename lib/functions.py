@@ -66,13 +66,6 @@ def random_card():
     return random_card
 
 
-def lose(num):
-    logger.info("===========================")
-    logger.info("       BLACK JACK          ")
-    logger.info("       YOU LOST!!          ")
-    logger.info(num)
-    logger.info("                           ")
-    logger.info("===========================")
 
 
 # below is a dealer class, that will handle dealer stuff 
@@ -102,7 +95,6 @@ class dealer():
                 new_card = random_card()
                 values.append(only_value(new_card))
                 print("dealer's new card: ", new_card, "|", "dealer's new total: ", sum(values))
-                play(dif, values)
                 return True, values, "hits"
             else:
                 print("dealer stays")
@@ -121,7 +113,7 @@ class dealer():
             ez_cards = ["king_of_clubs", "king_of_diamonds", "king_of_hearts", "queen_of_clubs", "queen_of_diamonds", "queen_of_hearts", "queen_of_spades", "jack_of_clubs", "jack_of_diamonds", "jack_of_hearts", "jack of spades", "10_of_clubs", "10_of_diamonds", "10_of_hearts", "10_of_spades"]
             not_rigged = random.choice(ez_cards)
             print("LEVEL 1 ", not_rigged)
-            return not_rigged # the dealer will get high cards.
+            return not_rigged # the dealer will get high cards. meaning busting easier.
         if(level == 2):
             medium_cards = [
     "9_of_clubs", "9_of_diamonds", "9_of_hearts", "9_of_spades",
@@ -136,8 +128,14 @@ class dealer():
             hard_cards = [
     "king_of_spades", "king_of_hearts", "queen_of_spades", "queen_of_hearts",
     "ace_of_spades", "ace_of_hearts", "ace_of_clubs", "ace_of_diamonds",
-    "jack_of_spades", "jack_of_hearts"
+    "jack_of_spades", "jack_of_hearts" # this might be broken ngl.
             ]
             not_rigged = random.choice(hard_cards)
+            return not_rigged
+        if(level == 4):
+            only_numbers = [
+    "2_of_clubs", "2_of_diamonds", "3_of_hearts", "3_of_spades", "4_of_hearts", "4_of_clubs" # only these currently.
+            ]
+            not_rigged = random.choice(only_numbers)
             return not_rigged
         return "Yo, no bot level was provided"

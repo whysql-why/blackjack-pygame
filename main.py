@@ -1,7 +1,6 @@
 from lib import functions, logger
 import os, random, pygame
 
-
 # project started on 2024-10-10
 # wanted different files doing different things.
 
@@ -12,6 +11,8 @@ import os, random, pygame
 #
 
 pygame.init()
+
+
 screen = pygame.display.set_mode((1000, 500))
 clock = pygame.time.Clock()
 running = True 
@@ -182,20 +183,22 @@ print("== 2 ", dealer_second_card, "[", functions.only_value(dealer_second_card)
 dealer_values = [functions.only_value(dealer_first_card), functions.only_value(dealer_second_card)]
 
 def already(data):
+    print("Function was called.")
     if sum(data) >= 21:
+        print("inside if now.")
         print("Ok so, dealer already has above 21 valued cards.")
         print("BEFORE: ")
         print(sum(data))
-        new_card = functions.dealer.random_card(1)
+        new_card = functions.dealer.random_card(4)
+        print("new card: ", new_card)
         new_card_value = functions.only_value(new_card)
-    
         dealer_values = [functions.only_value(dealer_first_card), new_card_value]
+        print("AFTER: ")
+        print(sum(dealer_values))
         return dealer_values
 
-if sum(dealer_values) >= 21:
-    already(dealer_values)
 
-dealer_values = already(dealer_values)
+# dealer_values = already(dealer_values)
 
 
 logger.info("Everything is completed, starting game.")
@@ -230,7 +233,8 @@ while running:
         if event.key == pygame.K_SPACE:
             logger.info("Player hits a card.")
             new_card = functions.random_card()
-            print(new_card) # ADD A SYSTEM TO DETECT IF THE SAME CARD HAS BEEN CHOSEN (RARE)
+            print(new_card) # ADD A SYSTEM TO DETECT IF THE SAME CARD HAS BEEN CHOSEN (RARE) 
+            # update, it's been added now ! 
             image_new_card = functions.loaded_card(new_card)
             second_card_rec.x = 500
             second_card_rec.y = 100
@@ -240,13 +244,70 @@ while running:
             print("TOTAL VALUE:", current_value)
             if current_value > 21:
                 logger.info("Player busts. You Lose.")
-                functions.lose(current_value)
+                logger.info("===========================")
+                logger.info("       BLACK JACK          ")
+                logger.info("       YOU LOST!! :(       ")
+                print(current_value, "was your total.")
+                print("Your cards:", total_values)
+                logger.info("===========================")
                 exit(0)
         if event.key == pygame.K_RETURN:
             print("Player said: Stand. with:", sum(total_values))
             logger.info("AI is playing.....")
+            if sum(dealer_values) >= 21:
+                # sum is called with the dealer cards are above or equal to 21 which is not nice.
+                print("dealer has above 21 valued cards. (bad)")
+                print("calling function")
+                dealer_values = already(dealer_values)
+                print(dealer_values)
             returned_values = functions.dealer.play(bot_dif, dealer_values)
-            print(returned_values)
+            print(returned_values) # prints returned values.
+            if(returned_values[2] == 'hits'):
+                print("ok, so dealer hits, catched returns.")
+                sum_of_total = sum(returned_values[1])
+                if(sum_of_total > 21):
+                    logger.info("Dealer BUST. You Win.")
+                    print("========================")
+                    print("      BLACK JACK         ")
+                    print("    YOU WON!!!!          ")
+                    print("      CARDS               ")
+                    print("Your cards:", total_values)
+                    print("Dealer cards:", returned_values[1])
+                    print("=========================")
+                    print("GG!!")
+                    exit(0)
+                else:
+                    player_cards = sum(total_values)
+                    logger.system("Calculating winner...") 
+                    dealer_dif = 21 - sum_of_total 
+                    player_dif = 21 - player_cards
+                    if player_dif > dealer_dif:
+                        logger.info("Player LOST!")
+                        print("========================")
+                        print("      BLACK JACK        ")
+                        print("    YOU LOST!           ")
+                        print("Dealer was closer:", dealer_dif)
+                        print("Your value:", player_dif)
+                        print("      CARDS              ")
+                        print("Your cards:", total_values)
+                        print("Dealer cards:", returned_values[1])
+                        print("=========================")
+                    else:
+                        logger.info("Player WON!!")
+                        print("========================")
+                        print("      BLACK JACK        ")
+                        print("    YOU WON!!!!         ")
+                        print("You were closer:", player_dif)
+                        print("Dealer's value:", dealer_dif)
+                        print("      CARDS              ")
+                        print("Your cards:", total_values)
+                        print("Dealer cards:", returned_values[1])
+                        print("=========================")
+                        print("GG!!") # gg guys
+                    exit(0)
+                print("Unexpected result. Error?")
+                print("You broke something :( !!") # oops !! 
+                exit(0)
             if(returned_values[2] == 'bust'):
                 for i in range(10):
                     print("\n")
@@ -256,6 +317,61 @@ while running:
                 print(returned_values[1])
                 print("=========================")
                 print("You WON!!!!", "Your cards:")
+                print(total_values)
+                exit(0)
+            if(returned_values[2] == 'stay'):
+                for i in range(10):
+                    print("\n")
+                print("========================")
+                print("      BLACK JACK         ")
+                print(" DEALER STAYED WITH CARDS:")
+                print(returned_values[1])
+                print("=========================")
+                
+                # find the winner.
+                # finalize everything.
+
+                dealer_cards = sum(returned_values[1]) # add all the cards of dealer.
+                player_cards = sum(total_values) # add all the cards of player.
+                logger.system("Calculating winner...")
+                if(player_cards > 21):
+                    logger.info("Player BUST. You LOST.")
+                    print("========================")
+                    print("      BLACK JACK         ")
+                    print("    YOU LOST!!!!          ")
+                    print("      CARDS               ")
+                    print("Your cards:", total_values)
+                    print("Dealer cards:", returned_values[1])
+                    print("=========================")
+                    print(" Try again?? Run the program.")
+                    exit(0) 
+                dealer_dif = 21 - dealer_cards 
+                player_dif = 21 - player_cards
+
+                if player_dif > dealer_dif:
+                    logger.info("Player LOST!")
+                    print("========================")
+                    print("      BLACK JACK        ")
+                    print("    YOU LOST!           ")
+                    print("Dealer was closer:", dealer_dif)
+                    print("Your value:", player_dif)
+                    print("      CARDS              ")
+                    print("Your cards:", total_values)
+                    print("Dealer cards:", returned_values[1])
+                    print("=========================")
+                else:
+                    logger.info("Player WON!!")
+                    print("========================")
+                    print("      BLACK JACK        ")
+                    print("    YOU WON!!!!         ")
+                    print("You were closer:", player_dif)
+                    print("Dealer's value:", dealer_dif)
+                    print("      CARDS              ")
+                    print("Your cards:", total_values)
+                    print("Dealer cards:", returned_values[1])
+                    print("=========================")
+                    print("GG!!") # gg guys
+
                 print(total_values)
                 exit(0)
            # screen.blit(image_new_card[0], second_card_rec)
