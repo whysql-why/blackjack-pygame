@@ -5,10 +5,16 @@ import os, random, pygame
 # wanted different files doing different things.
 
 # 2024-10-13: 
-# I do not like this :( BUGS: 
+# BUGS: 
 # 1. winning logic doesn't even work 
 # 2. dealer is broken, tried fixing. Do not want to work on the dealer no more.
 #
+
+# 2024-10-14:
+# no bugs.
+# fixed everything, game logic works now.
+# GG guys project done. 
+
 
 pygame.init()
 
